@@ -162,12 +162,6 @@ Pipeline is fully automated using a `Jenkinsfile`.
 
 ---
 
-## 📄 Setup Guide
-
-For full Kimai EC2 setup with PHP, Nginx, MariaDB, permissions, .env, database, admin user, Nginx config, cache clear, firewall — refer to the [Setup Guide](docs/low-level-design.md)
-
----
-
 ## 📌 Notes for Teams
 
 * Use Git to always pull latest changes
