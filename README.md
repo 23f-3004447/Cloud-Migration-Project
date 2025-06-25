@@ -57,13 +57,19 @@ Cloud-Migration-Project/
 ├─ terraform/
 │   ├─ main.tf
 │   ├─ variables.tf
-│   └─ ec2_module/...
+│   ├─ outputs.tf
+│   └─ modules/
+│     └─ ec2/
+│        ├─ main.tf
+│        ├─ variables.tf
+│        └─ outputs.tf
 ├─ Jenkinsfile
-├─ Dockerfile
-├─ docker-compose.yml (for local dev)
+├─ kimai/
+│      ├─ Dockerfile
+│      └─ docker-compose.yml
 ├─ docs/
-│   ├─ high-level-design.md
-│   └─ low-level-design.md
+│   ├─ HLD.md
+│   └─ LLD.md
 └─ README.md
 ```
 
