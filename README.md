@@ -42,7 +42,7 @@ This project focuses on migrating the **Kimai** time-tracking application to a c
 
 ```
 
-(pic)
+
 
 ### Security Highlights:
 
@@ -129,7 +129,7 @@ Stages:
 
 Pipeline is fully automated using a `Jenkinsfile`.
 
-(pic)
+
 
 ---
 
