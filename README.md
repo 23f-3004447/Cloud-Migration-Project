@@ -8,20 +8,20 @@ This project focuses on migrating the **Kimai** time-tracking application to a c
 
 ## 🔧 Tech Stack
 
-| Component        | Tech                            |
-| ---------------- | ------------------------------- |
-| Backend          | PHP (Symfony Framework)         |
-| Frontend         | HTML/CSS/JS (Bundled)           |
-| DB               | MariaDB / MySQL                 |
-| Server           | Nginx                           |
-| Runtime          | PHP-FPM                         |
-| OS               | Amazon Linux 2 (EC2)            |
-| IaC              | Terraform                       |
-| Containerization | Docker                          |
-| CI/CD            | Jenkins                         |
-| Monitoring       | CloudWatch, Prometheus, Grafana |
-| Logging          | CloudWatch Logs                 |
-| Access Control   | AWS IAM, Bastion Host           |
+| Component | Tech |
+| --- | --- |
+| Backend | PHP (Symfony Framework) |
+| Frontend | HTML/CSS/JS (Bundled) |
+| DB | MariaDB / MySQL |
+| Server | Nginx |
+| Runtime | PHP-FPM |
+| OS | Amazon Linux 2 (EC2) |
+| IaC | Terraform |
+| Containerization | Docker |
+| CI/CD | Jenkins |
+| Monitoring | CloudWatch, Prometheus, Grafana |
+| Logging | CloudWatch Logs |
+| Access Control | AWS IAM, Bastion Host |
 
 ---
 
@@ -39,14 +39,17 @@ This project focuses on migrating the **Kimai** time-tracking application to a c
 [ VPC ]
  ├── EC2 (Kimai + Docker) [Private Subnet]
  └── RDS (MySQL DB)       [Private Subnet]
+
 ```
+
+(pic)
 
 ### Security Highlights:
 
-* Bastion host for secure SSH
-* IAM with least privilege
-* Security Groups with only required ports open
-* ALB protected by AWS WAF
+- Bastion host for secure SSH
+- IAM with least privilege
+- Security Groups with only required ports open
+- ALB protected by AWS WAF
 
 ---
 
@@ -71,16 +74,17 @@ Cloud-Migration-Project/
 │   ├─ HLD.md
 │   └─ LLD.md
 └─ README.md
+
 ```
 
 ---
 
 ## ⚙️ Terraform Setup
 
-* Modular setup for reusability
-* Remote state managed in **S3**
-* Uses **t3.large** for Kimai EC2 and **t2.micro** for Bastion Host
-* Outputs public/private IPs, instance IDs
+- Modular setup for reusability
+- Remote state managed in **S3**
+- Uses **t3.large** for Kimai EC2 and **t2.micro** for Bastion Host
+- Outputs public/private IPs, instance IDs
 
 To deploy:
 
@@ -88,6 +92,7 @@ To deploy:
 cd terraform
 terraform init
 terraform apply -auto-approve
+
 ```
 
 ---
@@ -96,15 +101,16 @@ terraform apply -auto-approve
 
 Kimai is containerized with a multi-stage Dockerfile for optimized builds. The container is:
 
-* Non-root
-* Has healthcheck
-* Ready for production
+- Non-root
+- Has healthcheck
+- Ready for production
 
 To build locally:
 
 ```bash
 docker build -t kimai-app .
 docker run -p 80:8001 kimai-app
+
 ```
 
 ---
@@ -115,71 +121,81 @@ Trigger: Push to `main` branch
 
 Stages:
 
-* Checkout
-* Build Docker Image
-* Run Tests
-* Push to DockerHub
-* Deploy via SSH to EC2
+- Checkout
+- Build Docker Image
+- Run Tests
+- Push to DockerHub
+- Deploy via SSH to EC2
 
 Pipeline is fully automated using a `Jenkinsfile`.
+
+(pic)
 
 ---
 
 ## 🔒 Security
 
-* **WAF** filters traffic on Load Balancer
-* **Bastion Host** enables safe key-based access to private instances
-* **IAM Role** attached to Kimai EC2 for CloudWatch agent and S3 access
+- **WAF** filters traffic on Load Balancer
+- **Bastion Host** enables safe key-based access to private instances
+- **IAM Role** attached to Kimai EC2 for CloudWatch agent and S3 access
 
 ---
 
 ## 📊 Monitoring & Logging
 
-* **CloudWatch Agent** installed and configured on EC2
-* Monitors:
+- **CloudWatch Agent** installed and configured on EC2
+- Monitors:
+    - CPU usage
+    - Memory and Disk space
+    - Application logs
+- Alerts configured for:
+    - High CPU (> 80%)
+    - Health Check failures
 
-  * CPU usage
-  * Memory and Disk space
-  * Application logs
-* Alerts configured for:
+### 📈 Grafana Setup
 
-  * High CPU (> 80%)
-  * Low Disk Space (< 20% free)
-  * Health Check failures
+- Grafana installed on EC2
+- Connected to CloudWatch via IAM role
+- Dashboards created for:
+    - CPU Utilization
+    - Memory Usage
+    - Disk Usage
+    - Network Traffic
+- Alerts enabled with thresholds
 
 ---
 
 ## 💵 Cost Estimation (Monthly)
 
-| Resource                | Cost                |
-| ----------------------- | ------------------- |
-| EC2 (t3.large)          | \~\$33.28           |
-| Bastion Host (t2.micro) | \~\$7.62            |
-| EBS (28GB total)        | \~\$2.80            |
-| S3 (backups + state)    | \~\$0.12            |
-| CloudWatch              | \~\$2.00            |
-| **Total**               | **\~\$45–48/month** |
+| Resource | Cost |
+| --- | --- |
+| EC2 (t3.large) | ~$33.28 |
+| Bastion Host (t2.micro) | ~$7.62 |
+| EBS (28GB total) | ~$2.80 |
+| S3 (backups + state) | ~$0.12 |
+| CloudWatch | ~$2.00 |
+| **Total** | **~$45–48/month** |
 
 ---
 
 ## 📌 Notes for Teams
 
-* Use Git to always pull latest changes
-* All setup scripts are idempotent
-* Logs and backups go to AWS
-* Easily replicable using Terraform anywhere
+- Use Git to always pull latest changes
+- All setup scripts are idempotent
+- Logs and backups go to AWS
+- Easily replicable using Terraform anywhere
 
 ---
 
 ## 📑 Final Checklist
 
-* ✅ High-Level & Low-Level Design in `/docs`
-* ✅ Terraform infra with S3 remote state
-* ✅ CI/CD with Jenkins
-* ✅ Dockerized Kimai app
-* ✅ Secure via Bastion + IAM + WAF
-* ✅ Monitoring and alerts with CloudWatch
-* ✅ Cost Estimate and Final Report generated
+- ✅ High-Level & Low-Level Design in `/docs`
+- ✅ Terraform infra with S3 remote state
+- ✅ CI/CD with Jenkins
+- ✅ Dockerized Kimai app
+- ✅ Secure via Bastion + IAM + WAF
+- ✅ Monitoring and alerts with CloudWatch + Grafana
+- ✅ Cost Estimate and Final Report generated
 
 ---
 
